@@ -1,0 +1,33 @@
+{
+  "name": "nucleus-browser",
+  "version": "1.0.0",
+  "main": "./dist/bundle.cjs.js",
+  "module": "./dist/bundle.esm.js",
+  "browser": "./dist/bundle.umd.js",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "nodemon -w src -e ts,js --exec 'yarn build-dev'",
+    "build-dev": "BUILD_DEV=true rollup -c"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.3",
+    "@rollup/plugin-node-resolve": "^15.1.0",
+    "@rollup/plugin-replace": "^5.0.2",
+    "@types/clientjs": "^0.2.0",
+    "@types/nanoid": "^3.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^7.32.0 || ^8.2.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "rollup": "^3.26.2",
+    "rollup-plugin-typescript2": "^0.35.0",
+    "typescript": "^5.1.6",
+    "nodemon": "^3.0.1"
+  },
+  "dependencies": {
+    "clientjs": "^0.2.1"
+  }
+}
