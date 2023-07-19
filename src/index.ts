@@ -78,11 +78,17 @@ class Nucleus {
 
     if (!this.config.disableErrorReports) {
       window.onerror = (_message, _file, _line, _col, err) => {
-        if (err && !this.config.disableTracking) this.trackError('windowError', err);
+        if (err && !this.config.disableTracking) {
+          this.trackError('windowError', err);
+          Logger.log(`tracked in window.onerror: ${err}`);
+        }
       };
 
-      window.onunhandledrejection = (event) => {
-        if (event.reason && !this.config.disableTracking) this.trackError('unhandledRejection', event.reason);
+      window.onunhandledrejection = (event: PromiseRejectionEvent) => {
+        if (event.reason && !this.config.disableTracking) {
+          this.trackError('unhandledRejection', event.reason);
+          Logger.log(`tracked in window.onunhandledrejection: ${event.reason}`);
+        }
       };
     }
 
