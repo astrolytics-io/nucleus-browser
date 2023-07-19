@@ -7,7 +7,6 @@
 1. [Getting Started](#getting-started)
 2. [Usage](#usage)
 3. [How to Contribute](#how-to-contribute)
-4. [License](#license)
 
 ## Getting Started
 
