@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + TS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/index.css" />
+  </head>
+  <body>
+    <div class="flex flex-col items-center my-24">
+      <h1>Vite + HTML</h1>
+      <span> tracking: <span class="text-green-400" id="tracking">enabled</span> </span>
+      <div class="card grid gap-4 grid-cols-3" id="buttonContainer"></div>
+      <a class="mt-4 text-blue-400 underline" href="/my-page">
+        Going to other pages will trigger pageview by default!
+      </a>
+      <p class="mt-4 self-center text-center italic font-light text-sm text-gray-100">
+        identify arguments: Nucleus.identify('18710830', { email: 'ernest@nucleus.sh', firstName:
+        'Ernest', lastName: 'Rutherford' });
+      </p>
+    </div>
+  </body>
+  <script src="http://localhost:8000/bundle.iife.js"></script>
+  <script>
+    function createButton(id, text, additionalClasses = '') {
+      let button = document.createElement('button');
+      button.id = id;
+      button.type = 'button';
+      button.classList = `bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${additionalClasses}`;
+      button.textContent = text;
+      return button;
+    }
+
+    const buttonContainer = document.querySelector('#buttonContainer');
+    buttonContainer.appendChild(createButton('trackButton', 'Track Click'));
+    buttonContainer.appendChild(createButton('trackFooBar', 'Track Custom Foo Bar'));
+    buttonContainer.appendChild(createButton('trackFooBaz', 'Track Custom Foo Baz'));
+    buttonContainer.appendChild(createButton('trackError', 'Track Error'));
+    buttonContainer.appendChild(createButton('identify', 'Identify'));
+    buttonContainer.appendChild(createButton('trackPage', 'Track hypothetic pageview'));
+    buttonContainer.appendChild(
+      createButton(
+        'disableTracking',
+        'Disable tracking',
+        'bg-red-400 text-black hover:border border-black focus:ring-2 ring-black'
+      )
+    );
+    buttonContainer.appendChild(
+      createButton(
+        'enableTracking',
+        'Enable tracking',
+        'bg-green-400 text-black hover:border border-black focus:ring-2 ring-black'
+      )
+    );
+  </script>
+  <script>
+    const APP_ID = '64b72d3576d14e90860b8956';
+
+    Nucleus.init(APP_ID, {
+      debug: true,
+      endpoint: 'ws://localhost:3002',
+      reportInterval: 4 * 1000,
+      sessionTimeout: 1000 * 10,
+    });
+
+    document.querySelector('#trackButton').addEventListener('click', () => {
+      Nucleus.track('click');
+    });
+
+    document.querySelector('#trackFooBar').addEventListener('click', () => {
+      Nucleus.track('custom', { foo: 'bar' });
+    });
+
+    document.querySelector('#trackFooBaz').addEventListener('click', () => {
+      Nucleus.track('custom', { foo: 'baz' });
+    });
+
+    document.querySelector('#identify').addEventListener('click', () => {
+      Nucleus.identify('18710830', {
+        email: 'ernest@nucleus.sh',
+        firstName: 'Ernest',
+        lastName: 'Rutherford',
+      });
+    });
+
+    document.querySelector('#trackPage').addEventListener('click', () => {
+      Nucleus.page('/blog', { scrollHeight: 1123 });
+    });
+
+    document.querySelector('#disableTracking').addEventListener('click', () => {
+      Nucleus.disableTracking();
+      document.querySelector('#tracking').innerText = 'disabled';
+      document.querySelector('#tracking').classList.remove('text-green-400');
+      document.querySelector('#tracking').classList.add('text-red-400');
+    });
+
+    document.querySelector('#enableTracking').addEventListener('click', () => {
+      Nucleus.enableTracking();
+      document.querySelector('#tracking').innerText = 'enabled';
+      document.querySelector('#tracking').classList.remove('text-red-400');
+      document.querySelector('#tracking').classList.add('text-green-400');
+    });
+
+    document.querySelector('#trackError').addEventListener('click', () => {
+      try {
+        throw new Error('This is a handled test error');
+      } catch (e) {
+        Nucleus.trackError(e);
+      }
+
+      throw new Error('This is an unhandled test error');
+    });
+  </script>
+</html>
