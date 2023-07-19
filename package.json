@@ -1,11 +1,16 @@
 {
   "name": "nucleus-browser",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "./dist/bundle.cjs.js",
   "module": "./dist/bundle.esm.js",
-  "browser": "./dist/bundle.umd.js",
+  "browser": "./dist/bundle.iife.js",
   "type": "module",
   "license": "MIT",
+  "homepage": "https://www.nucleus.sh",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nucleus-sh/nucleus-browser.git"
+  },
   "scripts": {
     "build": "rollup -c",
     "watch": "nodemon -w src -e ts,js --exec 'yarn build-dev'",
