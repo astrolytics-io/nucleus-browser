@@ -5,7 +5,7 @@
 ## Table of Contents
 
 1. [Getting Started](#getting-started)
-2. [Documentation](#documentation)
+2. [Usage](#usage)
 3. [How to Contribute](#how-to-contribute)
 4. [License](#license)
 
@@ -13,6 +13,10 @@
 
 To get started with Nucleus, create an account at [Nucleus](https://dash.nucleus.sh/login) and grab the App ID, then
 use the SDK to start tracking events.
+
+### Installation
+
+As NPM package (recommended)
 
 ```bash
 # with npm
@@ -22,7 +26,15 @@ npm install nucleus-browser
 yarn add nucleus-browser
 ```
 
-Then, initialize it in your JavaScript file:
+or as browser script
+
+
+```
+<script src="https://cdn.jsdelivr.net/npm/nucleus-browser/dist/bundle.iife.js"></script>
+```
+
+### Usage
+
 
 ```javascript
 import Nucleus from 'nucleus-browser';
@@ -32,19 +44,11 @@ Nucleus.init('YOUR_APP_ID');
 
 Replace `'YOUR_APP_ID'` with the unique ID of your app. You can get it [here](https://dash.nucleus.sh/account).
 
-You can check examples [here](./playground).
+You can check examples with different frameworks [here](./playground).
 
 ## API
 
-### Initialization
-
-Initialize Nucleus SDK with your application ID. Optional configuration parameters can also be passed.
-
-```javascript
-Nucleus.init('YOUR_APP_ID', options);
-```
-
-Nucleus also supports passing the following options as second argument:
+Nucleus supports passing the following options as second argument to the `Nucleus.init()` method:
 
 ```js
 Nucleus.init('APP_ID', {
