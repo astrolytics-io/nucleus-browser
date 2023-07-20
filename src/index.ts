@@ -63,10 +63,11 @@ class Nucleus {
     if (!this.stored.initialized) {
       this.stored.initialized = true;
       this.track(null, null, 'init');
+      Logger.log('Initialized');
     }
 
     Logger.setConfig({ debug: this.config.debug });
-    Logger.log(`initializing Nucleus with appId ${appId}...`);
+    Logger.log(`initializing with appId ${appId}...`);
     Logger.log(`config: ${JSON.stringify(this.config)}`);
 
     if (Object.values(getDeviceInfo()).find((value) => !value)) {
@@ -112,8 +113,6 @@ class Nucleus {
     // And send/save regularly the latest events without spamming the server in case of bursts
     setInterval(() => this.reportData(), this.config.reportInterval);
     this.reportData();
-
-    Logger.log('Nucleus initialized');
   }
 
   private static getClient(): Nucleus {
