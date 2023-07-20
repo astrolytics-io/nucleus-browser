@@ -3,20 +3,23 @@ import { safeLocalStorage } from './storage';
 import type { Store } from './types';
 import { generateNumId, generateStrId } from './utils';
 
-const initialStore = (): Store => ({
-  appId: safeLocalStorage.getItem('nucleus-appId') ?? null,
-  queue: JSON.parse(safeLocalStorage.getItem('nucleus-queue') || '[]'),
-  props: JSON.parse(safeLocalStorage.getItem('nucleus-props') || '{}'),
-  userId: safeLocalStorage.getItem('nucleus-userId') ?? null,
-  anonId: safeLocalStorage.getItem('nucleus-anonId') ?? generateStrId(12),
-  device: JSON.parse(safeLocalStorage.getItem('nucleus-device') || 'null') ?? getDeviceInfo(),
-  sessionId: safeLocalStorage.getItem('nucleus-sessionId') ?? generateNumId(),
-  lastActive: JSON.parse(safeLocalStorage.getItem('nucleus-lastActive') || 'null') ?? Date.now(),
-  client: 'browser',
-  moduleVersion: __VERSION__,
-});
+function getInitialStore(): Store {
+  return {
+    appId: safeLocalStorage.getItem('nucleus-appId') ?? null,
+    queue: JSON.parse(safeLocalStorage.getItem('nucleus-queue') || '[]'),
+    props: JSON.parse(safeLocalStorage.getItem('nucleus-props') || '{}'),
+    userId: safeLocalStorage.getItem('nucleus-userId') ?? null,
+    anonId: safeLocalStorage.getItem('nucleus-anonId') ?? generateStrId(12),
+    device: JSON.parse(safeLocalStorage.getItem('nucleus-device') || 'null') ?? getDeviceInfo(),
+    sessionId: safeLocalStorage.getItem('nucleus-sessionId') ?? generateNumId(),
+    lastActive: JSON.parse(safeLocalStorage.getItem('nucleus-lastActive') || 'null') ?? Date.now(),
+    initialized: JSON.parse(safeLocalStorage.getItem('nucleus-initialized') || 'false'),
+    client: 'browser',
+    moduleVersion: __VERSION__,
+  };
+}
 
-const stored: Store = initialStore();
+const stored: Store = getInitialStore();
 
 const store = new Proxy(stored, {
   get(target: Store, prop: keyof Store) {
@@ -31,7 +34,7 @@ const store = new Proxy(stored, {
       return parsedValue;
     }
 
-    return undefined;
+    return getInitialStore()[prop];
   },
   set(target: Store, prop: keyof Store, value: unknown) {
     // @ts-expect-error: this is fine

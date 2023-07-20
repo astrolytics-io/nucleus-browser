@@ -50,8 +50,6 @@ class Nucleus {
     return this.ws?.readyState === ExtendedWebSocket.OPEN;
   }
 
-  private initted: boolean = false;
-
   private lastTrackedPath: string | null = null;
 
   constructor(appId: string, options: Partial<Options> = {}) {
@@ -61,7 +59,11 @@ class Nucleus {
 
     this.stored.appId = appId;
     this.config = { ...defaults, ...options };
-    this.initted = true;
+
+    if (!this.stored.initialized) {
+      this.stored.initialized = true;
+      this.track(null, null, 'init');
+    }
 
     Logger.setConfig({ debug: this.config.debug });
     Logger.log(`initializing Nucleus with appId ${appId}...`);
@@ -124,7 +126,7 @@ class Nucleus {
 
   private monitorUserInactivity() {
     const resetActiveTimer = () => {
-      if (new Date().getTime() - this.stored.lastActive > this.config.sessionTimeout) {
+      if (Date.now() - this.stored.lastActive > this.config.sessionTimeout) {
         // the user is active again after expired session, so we need to call init
         // again with a new session id
         Logger.log('user became active again, reinitializing');
@@ -132,7 +134,7 @@ class Nucleus {
         this.track(null, null, 'init');
       }
 
-      this.stored.lastActive = new Date().getTime();
+      this.stored.lastActive = Date.now();
     };
 
     ['mousedown', 'keydown', 'touchstart', 'scroll'].forEach((event) => {
@@ -184,7 +186,7 @@ class Nucleus {
     if (
       (!name && !type)
       || (this.config.disableTracking || (isDevMode && this.config.disableInDev))
-      || !this.initted
+      || !this.stored.initialized
     ) return;
 
     Logger.log(`adding to queue: ${name || type}`);
@@ -195,8 +197,8 @@ class Nucleus {
     // remove 500ms from init event to make sure it is always chronologically first
     // (otherwise the first page event might have same time)
     const timestamp = type === 'init'
-      ? new Date().getTime() - 500
-      : new Date().getTime();
+      ? Date.now() - 500
+      : Date.now();
 
     let event: Event | HeartbeatEvent = {
       type,
@@ -239,7 +241,7 @@ class Nucleus {
 
     this.stored.userId = newId;
     Logger.log(`user id set to ${newId}`);
-    // if we already initted, send the new id
+    // if we already initialized, send the new id
     this.track(null, null, 'userid');
   }
 
@@ -260,7 +262,7 @@ class Nucleus {
 
     if (!Object.keys(newProps).length) return;
 
-    // if we already initted, send the new props
+    // if we already initialized, send the new props
     this.track(null, this.stored.props, 'props');
   }
 
@@ -312,7 +314,7 @@ class Nucleus {
       Logger.log(`removing heartbeat events from queue. Queue length: ${this.stored.queue.length}`);
       this.stored.queue = this.stored.queue
         .filter((event): event is Event => event.type !== 'heartbeat')
-        .filter((event) => event.date > new Date().getTime() - this.config.cutoff);
+        .filter((event) => event.date > Date.now() - this.config.cutoff);
       Logger.log(`new queue length: ${this.stored.queue.length}`);
     }
 

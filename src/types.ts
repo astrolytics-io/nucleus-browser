@@ -77,4 +77,5 @@ export interface Store extends SharedProperties{
   moduleVersion: string;
   client: string;
   lastActive: number;
+  initialized: boolean;
 }
