@@ -1,7 +1,19 @@
 import { getDeviceInfo } from './device';
-import { safeLocalStorage } from './storage';
+import { safeLocalStorage, safeSessionStorage } from './storage';
 import type { Store } from './types';
 import { generateNumId, generateStrId } from './utils';
+
+const storageKeys = {
+  appId: 'local',
+  queue: 'local',
+  props: 'local',
+  userId: 'local',
+  anonId: 'local',
+  device: 'local',
+  sessionId: 'local',
+  lastActive: 'local',
+  initialized: 'local',
+};
 
 function getInitialStore(): Store {
   return {
@@ -14,8 +26,6 @@ function getInitialStore(): Store {
     sessionId: safeLocalStorage.getItem('nucleus-sessionId') ?? generateNumId(),
     lastActive: JSON.parse(safeLocalStorage.getItem('nucleus-lastActive') || 'null') ?? Date.now(),
     initialized: JSON.parse(safeLocalStorage.getItem('nucleus-initialized') || 'false'),
-    client: 'browser',
-    moduleVersion: __VERSION__,
   };
 }
 
@@ -26,9 +36,12 @@ const store = new Proxy(stored, {
     const value = Reflect.get(target, prop);
     if (value != null) return value; // value in memory
 
-    const localStorageValue = safeLocalStorage.getItem(`nucleus-${String(prop)}`);
-    if (localStorageValue !== null && typeof localStorageValue === 'string') {
-      const parsedValue = JSON.parse(localStorageValue);
+    const storageType = storageKeys[prop];
+    const storage = storageType === 'session' ? safeSessionStorage : safeLocalStorage;
+
+    const storageValue = storage.getItem(`nucleus-${String(prop)}`);
+    if (storageValue !== null && typeof storageValue === 'string') {
+      const parsedValue = JSON.parse(storageValue);
       // @ts-expect-error: this is fine
       target[prop] = parsedValue;
       return parsedValue;
@@ -37,9 +50,12 @@ const store = new Proxy(stored, {
     return getInitialStore()[prop];
   },
   set(target: Store, prop: keyof Store, value: unknown) {
+    const storageType = storageKeys[prop];
+    const storage = storageType === 'session' ? safeSessionStorage : safeLocalStorage;
+
     // @ts-expect-error: this is fine
     target[prop] = value;
-    safeLocalStorage.setItem(`nucleus-${String(prop)}`, JSON.stringify(value));
+    storage.setItem(`nucleus-${String(prop)}`, JSON.stringify(value));
     return true;
   },
 });

@@ -105,8 +105,7 @@ Track page views with the page name and optional parameters. If the page name is
 Nucleus.page('/about', { foo: 'baz' });
 ```
 
-By default, Nucleus will track any page change that fires a 'popstate' event. If your framework is handling route changes differently,
-you should manually call `Nucleus.page`.
+By default, Nucleus will track any page change by polling the url every 50 ms. If you prefer to manually track page changes, set `automaticPageTracking` to false and call `Nucleus.page()` on every page change.
 
 ### Disabling Tracking
 

@@ -1,4 +1,5 @@
 import Nucleus from 'nucleus-browser';
+import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import reactLogo from './assets/react.svg';
@@ -103,12 +104,12 @@ function App() {
             Throw error
           </button>
         </div>
-        <a
-          href="/my-page"
+        <Link
+          to="/my-page"
           className="read-the-docs"
         >
           Navigate to /my-page
-        </a>
+        </Link>
       </div>
     </>
   );

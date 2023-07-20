@@ -96,13 +96,19 @@ class Nucleus {
     }
 
     if (this.config.automaticPageTracking) {
-      window.addEventListener('DOMContentLoaded', () => {
-        if (!this.config.disableTracking) this.page();
-      });
-
-      window.addEventListener('popstate', () => {
-        if (!this.config.disableTracking) this.page();
-      });
+      // poll the url every 50ms to detect page changes. It's the only reliable
+      // way to detect pages when using frameworks like React or Vue that handle
+      // navigation without emitting popstate events
+      setInterval(() => {
+        if (
+          !this.config.disableTracking
+          && this.lastTrackedPath !== window.location.pathname
+        ) {
+          Logger.log(`page change detected ${this.lastTrackedPath} -> ${window.location.pathname}`);
+          this.lastTrackedPath = window.location.pathname;
+          this.page();
+        }
+      }, 50);
     }
 
     // Automatically send data when back online
@@ -211,11 +217,17 @@ class Nucleus {
       deviceId: this.stored.device.deviceId,
       userId: this.stored.userId,
       anonId: this.stored.anonId,
+      moduleVersion: this.config.moduleVersion,
+      client: 'browser',
     };
 
     if (type === 'init' || type === 'error') {
       const { platform, locale } = this.stored.device;
-      event = { ...event, platform, locale } as InitOrErrorEvent;
+      event = {
+        ...event,
+        platform,
+        locale,
+      } as InitOrErrorEvent;
     }
 
     this.stored.queue.push(event);

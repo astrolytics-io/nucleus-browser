@@ -8,4 +8,5 @@ export default {
   sessionTimeout: 60 * 30 * 1000, // 30 minutes
   cutoff: 60 * 60 * 48 * 1000, // 48 hours
   disableErrorReports: false,
+  moduleVersion: __VERSION__,
 };

@@ -18,6 +18,7 @@ export interface Options {
   reportInterval: number;
   sessionTimeout: number;
   disableErrorReports: boolean;
+  moduleVersion: string;
 }
 
 export interface ServerACK {
@@ -47,14 +48,14 @@ interface CommonEvent extends SharedProperties {
   date: number;
   payload: string | object | null;
   deviceId: DeviceInfo['deviceId'];
+  moduleVersion: Options['moduleVersion'];
+  client: 'browser',
 }
 
 export interface InitOrErrorEvent extends CommonEvent {
   type: 'init' | 'error';
   platform: string;
   locale: string;
-  moduleVersion: string;
-  client: 'browser';
 }
 
 export interface OtherEvent extends CommonEvent {
@@ -74,8 +75,6 @@ export interface Store extends SharedProperties{
   queue: (Event | HeartbeatEvent)[];
   props: object;
   device: DeviceInfo
-  moduleVersion: string;
-  client: string;
   lastActive: number;
   initialized: boolean;
 }
