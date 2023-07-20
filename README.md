@@ -1,6 +1,4 @@
-# Nucleus-Browser
-
-[Nucleus.sh](https://wwww.nucleus.sh)'s browser SDK.
+# Nucleus.sh Browser SDK
 
 ## Table of Contents
 
