@@ -105,7 +105,6 @@ class Nucleus {
           && this.lastTrackedPath !== window.location.pathname
         ) {
           Logger.log(`page change detected ${this.lastTrackedPath} -> ${window.location.pathname}`);
-          this.lastTrackedPath = window.location.pathname;
           this.page();
         }
       }, 50);
