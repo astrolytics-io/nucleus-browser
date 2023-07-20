@@ -34,7 +34,7 @@ or as browser script
 we recommend using a specific version in case a non-backwards compatible change is introduced
 
 ```
-<script src="https://cdn.jsdelivr.net/npm/nucleus-browser@1.0.3/dist/bundle.iife.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/nucleus-browser@1.0.4/dist/bundle.iife.js"></script>
 ```
 
 ### Usage
