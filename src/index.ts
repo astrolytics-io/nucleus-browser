@@ -8,7 +8,7 @@ import type { Options, ServerACK, InitOrErrorEvent, HeartbeatEvent, Event, Store
 // eslint-disable-next-line no-use-before-define
 let client: Nucleus | null = null;
 
-class Nucleus {
+export default class Nucleus {
   public static init(appId: string, options: Partial<Options> = {}) {
     client = new Nucleus(appId, options);
   }
@@ -17,27 +17,27 @@ class Nucleus {
     name: Event['name'],
     payload: Event['payload'],
   ) {
-    this.getClient().track(name, payload);
+    this.getClient()?.track(name, payload);
   }
 
   public static trackError(name: string, err: Error) {
-    this.getClient().trackError(name, err);
+    this.getClient()?.trackError(name, err);
   }
 
   public static disableTracking() {
-    this.getClient().disableTracking();
+    this.getClient()?.disableTracking();
   }
 
   public static enableTracking() {
-    this.getClient().enableTracking();
+    this.getClient()?.enableTracking();
   }
 
   public static identify(newId: string, newProps: object | null = null) {
-    this.getClient().identify(newId, newProps);
+    this.getClient()?.identify(newId, newProps);
   }
 
   public static page(name: string, params: object | null = null) {
-    this.getClient().page(name, params);
+    this.getClient()?.page(name, params);
   }
 
   private stored: Store = store;
@@ -54,7 +54,9 @@ class Nucleus {
 
   constructor(appId: string, options: Partial<Options> = {}) {
     if (!appId) {
-      throw new Error('Nucleus: You must provide an appId');
+      // eslint-disable-next-line no-console
+      console.error('Nucleus: You must provide an appId');
+      return;
     }
 
     this.stored.appId = appId;
@@ -120,9 +122,11 @@ class Nucleus {
     this.reportData();
   }
 
-  private static getClient(): Nucleus {
+  private static getClient(): Nucleus | null {
     if (!client) {
-      throw new Error('Nucleus: You must initialize the client first');
+      // eslint-disable-next-line no-console
+      console.error('Nucleus: You must initialize the client first');
+      return null;
     }
 
     return client;
@@ -246,7 +250,8 @@ class Nucleus {
 
   private setUserId(newId: string) {
     if (!newId || newId.trim() === '') {
-      throw new Error('Nucleus: userId cannot be empty');
+      console.error('Nucleus: userId cannot be empty');
+      return;
     }
 
     this.stored.userId = newId;
@@ -372,5 +377,3 @@ class Nucleus {
     this.sendQueue();
   }
 }
-
-export default Nucleus;
