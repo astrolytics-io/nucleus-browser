@@ -3,7 +3,6 @@
   "version": "1.0.5",
   "main": "./dist/bundle.cjs.js",
   "module": "./dist/bundle.esm.js",
-  "browser": "./dist/bundle.iife.js",
   "type": "module",
   "license": "MIT",
   "homepage": "https://www.nucleus.sh",
