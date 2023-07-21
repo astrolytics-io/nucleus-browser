@@ -88,10 +88,10 @@ Nucleus.trackError(name, error);
 ```
 
 By default Nucleus will listen for `window.onerror` and `window.onunhandledrejection` events and send them to the API. If you want
-to disable this behaviour, you can set `disableTracking` to `true`:
+to disable this behaviour, you can set `disableErrorReports` to `true`:
 
 ```js
-Nucleus.init('APP_ID', { disableTracking: true })
+Nucleus.init('APP_ID', { disableErrorReports: true })
 ```
 
 ### User Identification
