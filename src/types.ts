@@ -6,7 +6,6 @@ export interface DeviceInfo {
   deviceId: string | null;
   platform: string | null;
   locale: string | null;
-  browser: string | null;
 }
 
 export interface Options {

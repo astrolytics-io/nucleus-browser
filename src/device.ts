@@ -15,7 +15,6 @@ export function getDeviceInfo(): DeviceInfo {
   const data: DeviceInfo = {
     ...defaultDeviceInfo,
     locale: client.getLanguage(),
-    browser: client.getBrowser(),
   };
 
   if (safeLocalStorage.getItem('nucleus-dId')) {
