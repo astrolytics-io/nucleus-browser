@@ -360,7 +360,7 @@ export default class Nucleus {
       this.ws.onopen = () => {
         Logger.log('ws connection opened');
         // timeout because the connection isn't always directly ready
-        setTimeout(this.sendQueue, 1000);
+        setTimeout(() => this.sendQueue(), 1000);
       };
     }
   }
