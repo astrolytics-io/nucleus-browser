@@ -1,4 +1,4 @@
-import type { Event } from './types';
+import type { NucleusEvent } from './types';
 
 export const isDevMode = window.location.hostname === 'localhost'
       || window.location.protocol === 'file:';
@@ -9,15 +9,15 @@ export class ExtendedWebSocket extends WebSocket {
   }
 }
 
-export function cleanEvent(event: Event): Event {
+export function cleanEvent(event: NucleusEvent): NucleusEvent {
   // not sure if this is a good idea in typescript, there shouldn't
   // really be null/undefined keys according to the interfaces?
   return Object.entries(event).reduce((acc, [key, value]) => {
     if (value !== null && value !== undefined) {
-      acc[key as keyof Event] = value;
+      acc[key as keyof NucleusEvent] = value;
     }
     return acc;
-  }, {} as Partial<Event>) as Event;
+  }, {} as Partial<NucleusEvent>) as NucleusEvent;
 }
 
 export function generateNumId(): number {

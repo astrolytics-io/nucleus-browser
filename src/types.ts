@@ -67,11 +67,11 @@ export interface HeartbeatEvent {
 }
 
 // any Event that is not a Heartbeat
-export type Event = InitOrErrorEvent | OtherEvent;
+export type NucleusEvent = InitOrErrorEvent | OtherEvent;
 
 export interface Store extends SharedProperties{
   appId: string | null;
-  queue: (Event | HeartbeatEvent)[];
+  queue: (NucleusEvent | HeartbeatEvent)[];
   props: object;
   device: DeviceInfo
   lastActive: number;

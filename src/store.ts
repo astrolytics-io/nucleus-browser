@@ -1,7 +1,7 @@
 import { getDeviceInfo } from './device';
 import { safeLocalStorage, safeSessionStorage } from './storage';
-import type { Store } from './types';
 import { generateNumId, generateStrId } from './utils';
+import type { Store } from './types';
 
 const storageKeys = {
   appId: 'local',

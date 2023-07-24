@@ -32,7 +32,17 @@ export default {
     },
   ],
   plugins: [
-    typescript(),
+    typescript({
+      // this option enables use of the declarations directory defined in tsconfig.json
+      useTsconfigDeclarationDir: true,
+      // this enables generation of declaration files and specifies the output directory
+      tsconfigOverride: {
+        compilerOptions: {
+          declaration: true,
+          declarationDir: './dist/types',
+        },
+      },
+    }),
     resolve(),
     commonjs(),
     replace({
