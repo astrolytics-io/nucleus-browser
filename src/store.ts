@@ -10,7 +10,7 @@ const storageKeys = {
   userId: 'local',
   anonId: 'local',
   device: 'local',
-  sessionId: 'local',
+  sessionId: 'session',
   lastActive: 'local',
   initialized: 'local',
 };
