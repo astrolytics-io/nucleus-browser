@@ -208,13 +208,15 @@ export default class Nucleus {
       ? Date.now() - 500
       : Date.now();
 
+    const referrer = document.referrer || null;
+
     let event: NucleusEvent | HeartbeatEvent = {
       type,
       name,
       id: tempId,
       date: timestamp,
       payload: type === 'init' && this.stored.props
-        ? this.stored.props
+        ? { ...this.stored.props, referrer }
         : payload,
       sessionId: this.stored.sessionId,
       deviceId: this.stored.device.deviceId,
