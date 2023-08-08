@@ -66,5 +66,23 @@ class JSONWrapper implements JSONStorage {
   }
 }
 
-export const safeLocalStorage: JSONStorage = typeof localStorage !== 'undefined' ? new JSONWrapper(localStorage) : new InMemoryJSONStorage();
-export const safeSessionStorage: JSONStorage = typeof sessionStorage !== 'undefined' ? new JSONWrapper(sessionStorage) : new InMemoryJSONStorage();
+// in some cases the browser might throw an error just for accessing localStorage, so we
+// use try/catch to handle it
+function initializeStorage() {
+  let safeLocalStorage: JSONStorage;
+  let safeSessionStorage: JSONStorage;
+
+  try {
+    safeLocalStorage = typeof localStorage !== 'undefined' ? new JSONWrapper(localStorage) : new InMemoryJSONStorage();
+    safeSessionStorage = typeof sessionStorage !== 'undefined' ? new JSONWrapper(sessionStorage) : new InMemoryJSONStorage();
+  } catch (err) {
+    safeLocalStorage = new InMemoryJSONStorage();
+    safeSessionStorage = new InMemoryJSONStorage();
+  }
+
+  return { safeLocalStorage, safeSessionStorage };
+}
+
+const { safeLocalStorage, safeSessionStorage } = initializeStorage();
+
+export { safeLocalStorage, safeSessionStorage };
