@@ -1,13 +1,9 @@
+import { ClientJS } from 'clientjs';
 import { safeLocalStorage } from './storage';
 import type { DeviceInfo } from './types';
 
 // eslint-disable-next-line import/prefer-default-export
 export function getDeviceInfo(): DeviceInfo {
-  // this library has side effects and throws errors in some
-  // cases e.g. Next.js compilation, so we import at runtime
-  // @ts-ignore
-  const { ClientJS } = require('clientjs');
-
   const client = new ClientJS();
 
   const defaultDeviceInfo = {
