@@ -1,7 +1,7 @@
 import { getDeviceInfo } from './device';
 import { isDevMode, cleanEvent, generateNumId, ExtendedWebSocket } from './utils';
 import defaults from './config';
-import store from './store';
+import getStore from './store';
 import Logger from './logger';
 import type { Options, ServerACK, InitOrErrorEvent, HeartbeatEvent, NucleusEvent, Store } from './types';
 
@@ -40,7 +40,7 @@ export default class Nucleus {
     this.getClient()?.page(name, params);
   }
 
-  private stored: Store = store;
+  private stored: Store = getStore();
 
   private config = defaults;
 

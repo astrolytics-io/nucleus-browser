@@ -29,35 +29,37 @@ function getInitialStore(): Store {
   };
 }
 
-const stored: Store = getInitialStore();
+export default function getStore(): Store {
+  const stored: Store = getInitialStore();
 
-const store = new Proxy(stored, {
-  get(target: Store, prop: keyof Store) {
-    const value = Reflect.get(target, prop);
-    if (value != null) return value; // value in memory
+  const store = new Proxy(stored, {
+    get(target: Store, prop: keyof Store) {
+      const value = Reflect.get(target, prop);
+      if (value != null) return value; // value in memory
 
-    const storageType = storageKeys[prop];
-    const storage = storageType === 'session' ? safeSessionStorage : safeLocalStorage;
+      const storageType = storageKeys[prop];
+      const storage = storageType === 'session' ? safeSessionStorage : safeLocalStorage;
 
-    const storageValue = storage.getItem(`nucleus-${String(prop)}`);
-    if (storageValue !== null && typeof storageValue === 'string') {
-      const parsedValue = JSON.parse(storageValue);
+      const storageValue = storage.getItem(`nucleus-${String(prop)}`);
+      if (storageValue !== null && typeof storageValue === 'string') {
+        const parsedValue = JSON.parse(storageValue);
+        // @ts-expect-error: this is fine
+        target[prop] = parsedValue;
+        return parsedValue;
+      }
+
+      return getInitialStore()[prop];
+    },
+    set(target: Store, prop: keyof Store, value: unknown) {
+      const storageType = storageKeys[prop];
+      const storage = storageType === 'session' ? safeSessionStorage : safeLocalStorage;
+
       // @ts-expect-error: this is fine
-      target[prop] = parsedValue;
-      return parsedValue;
-    }
+      target[prop] = value;
+      storage.setItem(`nucleus-${String(prop)}`, JSON.stringify(value));
+      return true;
+    },
+  });
 
-    return getInitialStore()[prop];
-  },
-  set(target: Store, prop: keyof Store, value: unknown) {
-    const storageType = storageKeys[prop];
-    const storage = storageType === 'session' ? safeSessionStorage : safeLocalStorage;
-
-    // @ts-expect-error: this is fine
-    target[prop] = value;
-    storage.setItem(`nucleus-${String(prop)}`, JSON.stringify(value));
-    return true;
-  },
-});
-
-export default store;
+  return store;
+}

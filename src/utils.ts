@@ -1,7 +1,8 @@
 import type { NucleusEvent } from './types';
 
-export const isDevMode = window.location.hostname === 'localhost'
-      || window.location.protocol === 'file:';
+export const isDevMode = typeof window === 'undefined'
+  ? false
+  : window.location.hostname === 'localhost' || window.location.protocol === 'file:';
 
 export class ExtendedWebSocket extends WebSocket {
   sendJson(data: any) {

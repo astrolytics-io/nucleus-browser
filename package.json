@@ -25,15 +25,16 @@
     "@rollup/plugin-replace": "^5.0.2",
     "@types/clientjs": "^0.2.0",
     "@types/nanoid": "^3.0.0",
+    "@types/node": "^20.4.9",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "eslint": "^7.32.0 || ^8.2.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.2",
+    "nodemon": "^3.0.1",
     "rollup": "^3.26.2",
     "rollup-plugin-typescript2": "^0.35.0",
-    "typescript": "^5.1.6",
-    "nodemon": "^3.0.1"
+    "typescript": "^5.1.6"
   },
   "dependencies": {
     "clientjs": "^0.2.1"
