@@ -21,8 +21,8 @@ export function cleanEvent(event: NucleusEvent): NucleusEvent {
   }, {} as Partial<NucleusEvent>) as NucleusEvent;
 }
 
-export function generateNumId(): number {
-  const LENGTH = 8;
+export function generateNumId(length: number): number {
+  const LENGTH = length || 8;
   const min = 10 ** (LENGTH - 1);
   const max = (10 ** LENGTH) - 1;
 

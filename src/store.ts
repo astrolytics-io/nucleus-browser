@@ -16,17 +16,35 @@ const storageKeys = {
 };
 
 function getInitialStore(): Store {
-  return {
-    appId: safeLocalStorage.getItem('nucleus-appId') ?? null,
-    queue: JSON.parse(safeLocalStorage.getItem('nucleus-queue') || '[]'),
-    props: JSON.parse(safeLocalStorage.getItem('nucleus-props') || '{}'),
-    userId: safeLocalStorage.getItem('nucleus-userId') ?? null,
-    anonId: safeLocalStorage.getItem('nucleus-anonId') ?? generateStrId(12),
-    device: JSON.parse(safeLocalStorage.getItem('nucleus-device') || 'null') ?? getDeviceInfo(),
-    sessionId: safeLocalStorage.getItem('nucleus-sessionId') ?? generateNumId(),
-    lastActive: JSON.parse(safeLocalStorage.getItem('nucleus-lastActive') || 'null') ?? Date.now(),
-    initialized: JSON.parse(safeLocalStorage.getItem('nucleus-initialized') || 'false'),
+  let storeValues: Store = {
+    appId: null,
+    queue: [],
+    props: {},
+    userId: null,
+    anonId: generateStrId(12),
+    device: getDeviceInfo(),
+    sessionId: generateNumId(8),
+    lastActive: Date.now(),
+    initialized: false,
   };
+
+  try {
+    storeValues = {
+      appId: safeLocalStorage.getItem('nucleus-appId') ?? null,
+      queue: JSON.parse(safeLocalStorage.getItem('nucleus-queue') || '[]'),
+      props: JSON.parse(safeLocalStorage.getItem('nucleus-props') || '{}'),
+      userId: safeLocalStorage.getItem('nucleus-userId') ?? null,
+      anonId: safeLocalStorage.getItem('nucleus-anonId') ?? generateStrId(12),
+      device: JSON.parse(safeLocalStorage.getItem('nucleus-device') || 'null') ?? getDeviceInfo(),
+      sessionId: safeLocalStorage.getItem('nucleus-sessionId') ?? generateNumId(8),
+      lastActive: JSON.parse(safeLocalStorage.getItem('nucleus-lastActive') || 'null') ?? Date.now(),
+      initialized: JSON.parse(safeLocalStorage.getItem('nucleus-initialized') || 'false'),
+    };
+  } catch (err) {
+    // do nothing
+  }
+
+  return storeValues;
 }
 
 export default function getStore(): Store {

@@ -138,7 +138,7 @@ export default class Nucleus {
         // the user is active again after expired session, so we need to call init
         // again with a new session id
         Logger.log('user became active again, reinitializing');
-        this.stored.sessionId = generateNumId();
+        this.stored.sessionId = generateNumId(8);
         this.track(null, null, 'init');
       }
 
