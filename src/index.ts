@@ -252,7 +252,6 @@ export default class Nucleus {
 
   private setUserId(newId: string | undefined) {
     if (!newId || newId.trim() === '') {
-      console.error('Nucleus: userId cannot be empty');
       return;
     }
 
