@@ -60,10 +60,14 @@ export default function getStore(): Store {
 
       const storageValue = storage.getItem(`nucleus-${String(prop)}`);
       if (storageValue !== null && typeof storageValue === 'string') {
-        const parsedValue = JSON.parse(storageValue);
-        // @ts-expect-error: this is fine
-        target[prop] = parsedValue;
-        return parsedValue;
+        try {
+          const parsedValue = JSON.parse(storageValue);
+          // @ts-expect-error: this is fine
+          target[prop] = parsedValue;
+          return parsedValue;
+        } catch (err) {
+          return storageValue;
+        }
       }
 
       return getInitialStore()[prop];
