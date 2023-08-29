@@ -8,6 +8,9 @@ import type { Options, ServerACK, InitOrErrorEvent, HeartbeatEvent, NucleusEvent
 // eslint-disable-next-line no-use-before-define
 let client: Nucleus | null = null;
 
+console.warn('[Nucleus] Nucleus is now named Astrolytics. Please add the new package "astrolytics-browser" instead of this one, or go to www.astrolytics.io for more information.'
+ + ' This package will no longer receive updates.');
+
 export default class Nucleus {
   public static init(appId: string, options: Partial<Options> = {}) {
     client = new Nucleus(appId, options);
