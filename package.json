@@ -1,6 +1,6 @@
 {
   "name": "nucleus-browser",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "main": "./dist/bundle.cjs.js",
   "module": "./dist/bundle.esm.js",
   "types": "./dist/types/index.d.ts",
